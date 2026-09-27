@@ -1,4 +1,4 @@
-import funcoes_teste
+from src import funcoes_teste
 import numpy as np
 
 if __name__ == "__main__":
