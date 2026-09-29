@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import os
 
 from src import algoritmo_genetico as ag
 from src import funcoes_teste as ft
@@ -56,6 +57,10 @@ def imprimir_tabela(titulo: str, linhas: list[tuple[str,dict]])-> None:
 
 def plotar_convergencia(titulo: str, linhas: List[tuple[str,dict]], arquivo: str) -> None:
     
+    destino = "graficos"
+    os.makedirs(destino, exist_ok=True)
+    caminho = os.path.join(destino, arquivo)
+    
     plt.figure(figsize=(6,4))
     
     for nome, r in linhas:
@@ -67,7 +72,7 @@ def plotar_convergencia(titulo: str, linhas: List[tuple[str,dict]], arquivo: str
     plt.title(titulo)
     plt.legend()
     plt.tight_layout()
-    plt.savefig(arquivo, dpi=150)
+    plt.savefig(caminho, dpi=150)
     plt.close()
 
 def experimento_basico()->None:
