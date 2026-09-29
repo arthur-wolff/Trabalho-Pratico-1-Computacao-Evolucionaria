@@ -5,7 +5,7 @@ def blx_alpha(parentes: np.ndarray, pc: float, alpha: float, low: float, high: f
               rng: np.random.Generator) -> np.ndarray:
     
     if len(parentes) % 2 != 0:
-        print("O numero de pais dever ser par")
+       raise ValueError("O numero de pais dever ser par")
     
     p1 = parentes[0::2]
     p2 = parentes[1::2]
@@ -27,17 +27,17 @@ def blx_alpha(parentes: np.ndarray, pc: float, alpha: float, low: float, high: f
     
     return np.clip(filhos, low, high)
 
-def sigle_point(parentes: np.ndarray, pc: float, rng: np.random.Generator) -> np.ndarray:
+def single_point(parentes: np.ndarray, pc: float, rng: np.random.Generator) -> np.ndarray:
     
     if len(parentes) % 2 != 0:
         raise ValueError("O nuemro de pais deve ser par")
     
     p1 = parentes[0::2]
     p2 = parentes[1::2]
-    m,n = p1.shape
+    m, n = p1.shape
     
-    ponto = rng.integers(1,n,size=m)
-    antes_corte = np.arange(n)[None,:] < ponto[:, None]
+    ponto = rng.integers(1, n, size=m)
+    antes_corte = np.arange(n)[None, :] < ponto[:, None]
     
     filho1 = np.where(antes_corte, p1, p2)
     filho2 = np.where(antes_corte, p2, p1)
