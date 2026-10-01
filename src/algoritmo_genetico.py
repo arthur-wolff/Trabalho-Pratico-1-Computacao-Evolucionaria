@@ -1,11 +1,9 @@
 import numpy as np
-import matplotlib.pyplot as plt
 import time
 
 from src import selecao
 from src import mutacao
 from src import cruzamento
-from src import funcoes_teste
 from src import elitismo
 
 
@@ -27,7 +25,7 @@ def algoritmo_genetico(funcao_teste, n: int, *, N: int, pc: float, pm: float,
                        sigma: float, alpha: float, k: int, n_elite: int, 
                        metodo_selecao: str, metodo_cruzamento: str, low: float,
                        high: float, nfe_max: int, seed: int) -> dict:
-
+ 
     if N % 2 != 0:
         raise ValueError("N deve ser par")
     
@@ -39,6 +37,7 @@ def algoritmo_genetico(funcao_teste, n: int, *, N: int, pc: float, pm: float,
     nfe = N
     
     historico = [avaliacao.min()]
+    diversidade = [populacao.std(axis=0).mean()]
     
     while nfe + N <= nfe_max:
         
@@ -59,7 +58,7 @@ def algoritmo_genetico(funcao_teste, n: int, *, N: int, pc: float, pm: float,
         
         else:
             raise ValueError(f"Metodo de cruzamento desconhecido: {metodo_cruzamento}")
-
+ 
         filhos = mutacao.gaussiana(filhos, pm, sigma, low, high, rng)
         
         avaliacao_filhos = avaliar(filhos, funcao_teste)
@@ -68,6 +67,7 @@ def algoritmo_genetico(funcao_teste, n: int, *, N: int, pc: float, pm: float,
         populacao, avaliacao = elitismo.elitismo(populacao, avaliacao, filhos, avaliacao_filhos, n_elite)
         
         historico.append(avaliacao.min())
+        diversidade.append(populacao.std(axis=0).mean())
         
     i_melhor = int(np.argmin(avaliacao))
         
@@ -75,9 +75,10 @@ def algoritmo_genetico(funcao_teste, n: int, *, N: int, pc: float, pm: float,
         "melhor_x": populacao[i_melhor].copy(),
         "melhor_f": float(avaliacao[i_melhor]),
         "historico": np.array(historico),
+        "diversidade": np.array(diversidade),
         "nfe": nfe,
         "tempo": time.perf_counter() - inicio,
     }
-    
+
 
 

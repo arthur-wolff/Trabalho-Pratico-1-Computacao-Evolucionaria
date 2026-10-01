@@ -27,6 +27,7 @@ def blx_alpha(parentes: np.ndarray, pc: float, alpha: float, low: float, high: f
     
     return np.clip(filhos, low, high)
 
+
 def single_point(parentes: np.ndarray, pc: float, rng: np.random.Generator) -> np.ndarray:
     
     if len(parentes) % 2 != 0:
